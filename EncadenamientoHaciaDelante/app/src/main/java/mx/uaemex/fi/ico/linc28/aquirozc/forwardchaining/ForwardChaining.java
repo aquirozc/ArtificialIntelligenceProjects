@@ -10,7 +10,6 @@ public class ForwardChaining {
 	private Rules[] RULES_AS_ARRAY;
 	
 	public ForwardChaining(Rules[] rulesArray) {
-		super();
 		RULES_AS_ARRAY = rulesArray;		
 	}
 	
