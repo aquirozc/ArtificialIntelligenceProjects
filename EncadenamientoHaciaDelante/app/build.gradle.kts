@@ -9,11 +9,13 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    maven { url =  uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -31,4 +33,18 @@ java {
 application {
     // Define the main class for the application.
     mainClass.set("mx.uaemex.fi.ico.linc28.aquirozc.forwardchaining.App")
+}
+
+tasks{
+
+    build{
+        dependsOn("shadowJar")
+    }
+
+    shadowJar{
+        manifest{
+            attributes("MainClass" to "mx.uaemex.fi.ico.linc28.aquirozc.forwardchaining.App")
+        }
+    }
+
 }
