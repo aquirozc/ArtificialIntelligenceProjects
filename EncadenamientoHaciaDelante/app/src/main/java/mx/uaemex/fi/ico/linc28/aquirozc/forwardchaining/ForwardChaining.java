@@ -17,22 +17,21 @@ public class ForwardChaining {
 	public boolean checkIfGoalIsMeet(String goal, List<String>kb) {
 		
 		HAS_RULE_BEEN_MEET = new boolean[RULES_AS_ARRAY.length];
-		int currentSize;
+		int index = 1;
 		
-		do {
-			 currentSize= kb.size();
-			 
-			 kb.addAll(
-					IntStream.range(0, RULES_AS_ARRAY.length)
-						.filter(i -> !HAS_RULE_BEEN_MEET[i] && Arrays.stream(RULES_AS_ARRAY[i].req).allMatch(kb::contains))
-						.peek(this::markAsMeeted)
-						.mapToObj(i -> RULES_AS_ARRAY[i].res)
-						.filter(s -> !kb.contains(s))
-						.distinct()
-						.toList()
-			 );	
-			 
-		}while(currentSize != kb.size());
+		while (index <= kb.size()) {
+			List<String> l = kb.subList(0, index);
+			
+			kb.addAll(IntStream.range(0, RULES_AS_ARRAY.length)
+				.filter(i -> !HAS_RULE_BEEN_MEET[i] && Arrays.stream(RULES_AS_ARRAY[i].req).allMatch(l::contains))
+				.peek(this::markAsMeeted)
+				.mapToObj(i -> RULES_AS_ARRAY[i].res)
+				.filter(s -> !kb.contains(s))
+				.distinct()
+				.toList());
+			
+			index++;
+		}
 		
 		return goal.equals(kb.get(kb.size()-1));
 		
